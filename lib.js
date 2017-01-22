@@ -28,7 +28,7 @@
 
   // delegate({
     // el: $list,
-    // event: "click",
+    // type: "click",
     // to: "li",
     // callback: function(e) {
     //   console.log(this);
