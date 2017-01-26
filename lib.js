@@ -14,6 +14,13 @@
     this.length = nodes.length;
   }
 
+  function extend(target, obj) {
+    for(var prop in obj) {
+      if(obj.hasOwnProperty(prop)) {
+        target[prop] = obj[prop];
+      }
+    }
+  }
 
   global.dom = dom;
 
