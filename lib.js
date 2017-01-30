@@ -108,6 +108,26 @@
 
     parent: function() {
       return firstElement(this)["parentElement"];
+    },
+
+    on: function(type, del, callback) {
+      if(arguments.length >= 3 && isString(del)) {
+        eachElement(this, function(el) {
+          el.addEventListener(type, function(e) {
+            var el = e.target;
+            if(el.nodeName.toLowerCase() === del.toLowerCase()) {
+              callback.call(el, e);
+            }
+          });
+        });
+      } else {
+        callback = del;
+        eachElement(this, function(el) {
+          el.addEventListener(type, function(e) {
+            callback.call(this, e);
+          });
+        });
+      }
     }
   };
 
