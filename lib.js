@@ -90,7 +90,8 @@
     },
 
     extend: extend,
-    isNode: isNode
+    isNode: isNode,
+    fn: dom.prototype
   }
 
   var protoMethods = {
