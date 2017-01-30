@@ -58,7 +58,21 @@
     }
   }
 
+
+  function dimension(els, prop, val) {
+    if(val) {
+      eachElement(els, function(el) {
+        el.style[prop] = isNumber(val) ? val + "px" : val;
+      });
+      return els;
+    } else {
+      return firstElement(els)["style"][prop];
+    }
+  }  
+  
+  
   var fnMethods = {
+    find: dom,
     each: function(iteratee, fn) {
       if(isObject(iteratee)) {
         for(var prop in iteratee) {
@@ -132,8 +146,8 @@
 
     children: function() {
       var els = Array.from(this[0].childNodes);
-      els = els.map(function(el) {
-        return dom(el);
+      els = els.filter(function(el) {
+        return isNode(el) ? dom(el) : false;
       });
       return els;
     },
@@ -156,7 +170,31 @@
           });
         });
       }
+    },
+
+    find: function(sel) {
+      var els = [];
+      eachElement(this, function(el) {
+        var nodes = dom(sel, this);
+        eachElement(nodes, function(el) {
+          els.push(el);
+        });
+      });
+      return els;
+    },
+
+
+    width: function(amount) {
+      return amount ? dimension(this, "width", amount) 
+                    : dimension(this, "width");
+    },
+
+    height: function(amount) {
+      return amount ? dimension(this, "height", amount) 
+                    : dimension(this, "height");
     }
+
+
   };
 
   extend(dom, fnMethods);
