@@ -6,7 +6,9 @@
       return new dom(sel);
     }
 
-    var nodes = isNode(sel) ? [sel] : (ctx || document).querySelectorAll(sel);
+    var nodes = isNode(sel) ? [sel] : 
+                Array.isArray(sel) ? sel :
+                (ctx || document).querySelectorAll(sel);
 
     nodes.forEach(function(node, i, arr) {
       this[i] = node;
@@ -133,11 +135,11 @@
     },
 
     first: function() {
-      return this[0];
+      return dom(this[0]);
     },
 
     last: function() {
-      return this[this.length - 1];
+      return dom(this[this.length - 1]);
     },
 
     parent: function() {
@@ -180,7 +182,7 @@
           els.push(el);
         });
       });
-      return els;
+      return dom(els);
     },
 
 
@@ -194,13 +196,11 @@
                     : dimension(this, "height");
     }
 
-
   };
 
   extend(dom, fnMethods);
   extend(dom.prototype, protoMethods);
 
   global.dom = dom;
-
 
 })(this);
