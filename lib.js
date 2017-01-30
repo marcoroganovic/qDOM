@@ -11,7 +11,9 @@
                 (ctx || document).querySelectorAll(sel);
 
     nodes.forEach(function(node, i, arr) {
-      this[i] = node;
+      if(isNode(node)) {
+        this[i] = node;
+      }
     }.bind(this));
 
     this.length = nodes.length;
@@ -194,6 +196,21 @@
     height: function(amount) {
       return amount ? dimension(this, "height", amount) 
                     : dimension(this, "height");
+    },
+
+    show: function() {
+      eachElement(this, function(el) {
+        var val = window.getComputedStyle(el).getPropertyValue("display");
+        el.style.display = val !== "none" ? val : "block";
+      });
+      return this;
+    },
+
+    hide: function() {
+      eachElement(this, function(el) {
+        el.style.display = "none";
+      });
+      return this;
     }
 
   };
