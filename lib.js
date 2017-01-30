@@ -60,7 +60,9 @@
           fn(i, item);
         });
       }
-    }
+    },
+
+    extend: extend
   }
 
   var protoMethods = {
