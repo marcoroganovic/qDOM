@@ -6,7 +6,8 @@
       return new dom(sel);
     }
 
-    var nodes = Array.from((ctx || document).querySelectorAll(sel));
+    var nodes = isNode(sel) ? [sel] : (ctx || document).querySelectorAll(sel);
+
     nodes.forEach(function(node, i, arr) {
       this[i] = node;
     }.bind(this));
@@ -19,12 +20,20 @@
     return typeof arg === "string";
   }
 
+  function isNumber(arg) {
+    return typeof arg === "number";
+  }
+
   function isObject(arg) {
     return typeof arg === "object";
   }
 
   function isFunction(arg) {
     return typeof arg === "function";
+  }
+
+  function isNode(arg) {
+    return arg && arg.nodeType && (arg.nodeType === 1 || arg.nodeType === 11);
   }
 
   function extend(target, obj) {
@@ -62,7 +71,8 @@
       }
     },
 
-    extend: extend
+    extend: extend,
+    isNode: isNode
   }
 
   var protoMethods = {
@@ -108,8 +118,24 @@
       }
     },
 
+    first: function() {
+      return this[0];
+    },
+
+    last: function() {
+      return this[this.length - 1];
+    },
+
     parent: function() {
       return firstElement(this)["parentElement"];
+    },
+
+    children: function() {
+      var els = Array.from(this[0].childNodes);
+      els = els.map(function(el) {
+        return dom(el);
+      });
+      return els;
     },
 
     on: function(type, del, callback) {
