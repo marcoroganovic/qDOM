@@ -301,7 +301,7 @@
       if(isStringSetter(args)) {
         this.attr("data-" + args[0], args[1]);
       } else if(isObjectSetter(args)) { 
-        this.attr(args[0], "data-");
+        this.attr(prefixProps(args[0], "data-"));
       } else if(isStringGetter(args)) {
         return firstElement(this).dataset[args[0]];
       }
