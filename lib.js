@@ -283,6 +283,12 @@
       }
       
       return this;
+    },
+
+    remove: function() {
+      eachElement(this, function(el) {
+        el.remove();
+      });
     }
 
   };
