@@ -78,7 +78,7 @@
 
 
   function dimension(els, prop, val) {
-    if(val) {
+    if(val || val === 0) {
       eachElement(els, function(el) {
         el.style[prop] = isNumber(val) ? val + "px" : val;
       });
@@ -251,13 +251,11 @@
 
 
     width: function(amount) {
-      return amount ? dimension(this, "width", amount) 
-                    : dimension(this, "width");
+      return dimension(this, "width", (amount || amount === 0) ? amount : null);
     },
 
     height: function(amount) {
-      return amount ? dimension(this, "height", amount) 
-                    : dimension(this, "height");
+      return dimension(this, "height", (amount || amount === 0) ? amount: null);
     },
 
     show: function() {
