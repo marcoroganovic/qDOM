@@ -99,6 +99,17 @@
     }
   }
 
+  function prefixProps(obj, val) {
+    var ret = {};
+
+    for(var prop in obj) {
+      if(obj.hasOwnProperty(prop)) {
+        ret[val + prop] = obj[prop];
+      }
+    }
+    return ret;
+  }
+
   function isStringSetter(args) {
     return args.length === 2 && isString(args[0]) && isString(args[1]);
   }
@@ -289,14 +300,8 @@
       var args = arguments;
       if(isStringSetter(args)) {
         this.attr("data-" + args[0], args[1]);
-      } else if(isObjectSetter(args)) {
-        var prefixed = {};
-        for(var attr in args[0]) {
-          if(args[0].hasOwnProperty(attr)) {
-            prefixed["data-" + attr] = args[0][attr];
-          }
-        }
-        this.attr(prefixed);
+      } else if(isObjectSetter(args)) { 
+        this.attr(args[0], "data-");
       } else if(isStringGetter(args)) {
         return firstElement(this).dataset[args[0]];
       }
