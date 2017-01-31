@@ -62,6 +62,20 @@
     }
   }
 
+  function prevOrNext(type) {
+    return function() {
+      var els = [];
+      eachElement(this, function(el) {
+        var curr = el[type];
+        if(curr) {
+          els.push(curr);
+        }
+      });
+
+      return dom(els);
+    }
+  }
+
 
   function dimension(els, prop, val) {
     if(val) {
@@ -169,6 +183,10 @@
       });
       return dom(els);
     },
+
+    prev: prevOrNext("previousElementSibling"),
+
+    next: prevOrNext("nextElementSibling"),
 
     on: function(type, del, callback) {
       if(arguments.length >= 3 && isString(del)) {
