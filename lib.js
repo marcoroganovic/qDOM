@@ -73,6 +73,18 @@
       return firstElement(els)["style"][prop];
     }
   }  
+
+  function isStringSetter(args) {
+    return args.length === 2 && isString(args[0]) && isString(args[1]);
+  }
+
+  function isObjectSetter(args) {
+    return args.length === 1 && isObject(args[0]);
+  }
+
+  function isStringGetter(args) {
+    return args.length === 1 && isString(args[0]);
+  }
   
   
   var fnMethods = {
@@ -109,21 +121,21 @@
 
     css: function() {
       var args = arguments;
-      if(args.length && args.length === 1 && isString(args[0])) {
-        return firstElement(this)["style"][args[0]];
-      } else if(args.length && args.length === 2) {
+      if(isStringSetter(args)) {
         eachElement(this, function(el) {
           el["style"][args[0]] = args[1];
         });
-        return this;
-      } else if(args.length === 1 && isObject(args[0])) {
-        for(var attr in args[0]) {
-          eachElement(this, function(el) {
-            el["style"][attr] = args[0][attr];
-          });
-        }
-        return this;
+      } else if(isObjectSetter(args)) {
+        eachElement(this, function(el) {
+          for(var prop in args[0]) {
+            el["style"][prop] = args[0][prop];
+          }
+        });
+      } else if(isStringGetter(args)) {
+        return firstElement(this)["style"][args[0]]
       }
+
+      return this;
     },
 
     text: function(content) {
@@ -131,10 +143,11 @@
         eachElement(this, function(el) {
           el.textContent = content;
         });
-        return this;
       } else {
         return firstElement(this)["textContent"];
       }
+
+      return this;
     },
 
     first: function() {
@@ -154,7 +167,7 @@
       els = els.filter(function(el) {
         return isNode(el) ? dom(el) : false;
       });
-      return els;
+      return dom(els);
     },
 
     on: function(type, del, callback) {
@@ -211,6 +224,46 @@
       eachElement(this, function(el) {
         el.style.display = "none";
       });
+      return this;
+    },
+
+    attr: function() {
+      var args = arguments;
+      if(isStringSetter(args)) {
+        eachElement(this, function(el) {
+          el.setAttribute(args[0], args[1]);
+        });
+      } else if(isObjectSetter(args)) {
+        eachElement(this, function(el) {
+          for(var attr in args[0]) {
+            if(args[0].hasOwnProperty(attr)) {
+              el.setAttribute(attr, args[0][attr]);
+            }
+          }
+        });
+      } else if(isStringGetter(args)) {
+        return firstElement(this).getAttribute(arguments[0]);
+      }
+
+      return this;
+    },
+
+    data: function() {
+      var args = arguments;
+      if(isStringSetter(args)) {
+        this.attr("data-" + args[0], args[1]);
+      } else if(isObjectSetter(args)) {
+        var prefixed = {};
+        for(var attr in args[0]) {
+          if(args[0].hasOwnProperty(attr)) {
+            prefixed["data-" + attr] = args[0][attr];
+          }
+        }
+        this.attr(prefixed);
+      } else if(isStringGetter(args)) {
+        return firstElement(this).dataset[args[0]];
+      }
+      
       return this;
     }
 
