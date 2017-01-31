@@ -175,6 +175,14 @@
       return this;
     },
 
+    get: function() {
+      var els = [];
+      eachElement(this, function(el) {
+        els.push(el);
+      });
+      return els;
+    },
+
     first: function() {
       return dom(this[0]);
     },
@@ -300,6 +308,7 @@
       eachElement(this, function(el) {
         el.remove();
       });
+      return this;
     },
 
     addClass: manipulateClass("add"),
