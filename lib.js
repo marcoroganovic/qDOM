@@ -112,7 +112,7 @@
   }
   
   
-  var fnMethods = {
+  var staticMethods = {
     find: dom,
     each: function(iteratee, fn) {
       if(isObject(iteratee)) {
@@ -318,7 +318,7 @@
     toggleClass: manipulateClass("toggle")
   };
 
-  extend(dom, fnMethods);
+  extend(dom, staticMethods);
   extend(dom.prototype, protoMethods);
 
   global.dom = dom;
