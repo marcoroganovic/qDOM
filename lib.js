@@ -86,7 +86,18 @@
     } else {
       return firstElement(els)["style"][prop];
     }
-  }  
+  }
+
+  function manipulateClass(type) {
+    return function(className) {
+      if(className && isString(className)) {
+        eachElement(this, function(el) {
+          el.classList[type](className);
+        }); 
+      }
+      return this;
+    }
+  }
 
   function isStringSetter(args) {
     return args.length === 2 && isString(args[0]) && isString(args[1]);
@@ -289,8 +300,13 @@
       eachElement(this, function(el) {
         el.remove();
       });
-    }
+    },
 
+    addClass: manipulateClass("add"),
+    
+    removeClass: manipulateClass("remove"),
+    
+    toggleClass: manipulateClass("toggle")
   };
 
   extend(dom, fnMethods);
