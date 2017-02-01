@@ -251,11 +251,13 @@
 
 
     width: function(amount) {
-      return dimension(this, "width", (amount || amount === 0) ? amount : null);
+      amount = (amount || amount === 0) ? amount : null;
+      return dimension(this, "width", amount);
     },
 
     height: function(amount) {
-      return dimension(this, "height", (amount || amount === 0) ? amount: null);
+      amount = (amount || amount === 0) ? amount : null;
+      return dimension(this, "height", amount);
     },
 
     show: function() {
