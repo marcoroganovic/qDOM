@@ -261,18 +261,11 @@
     },
 
     show: function() {
-      eachElement(this, function(el) {
-        var val = window.getComputedStyle(el).getPropertyValue("display");
-        el.style.display = val !== "none" ? val : "block";
-      });
-      return this;
+      return this.css("display", "");
     },
 
     hide: function() {
-      eachElement(this, function(el) {
-        el.style.display = "none";
-      });
-      return this;
+      return this.css("display", "none");
     },
 
     attr: function() {
