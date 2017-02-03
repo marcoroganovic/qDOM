@@ -168,7 +168,9 @@
           }
         });
       } else if(isStringGetter(args)) {
-        return firstElement(this)["style"][args[0]]
+        return document.defaultView
+                       .getComputedStyle(firstElement(this))
+                       .getPropertyValue(args[0]);
       }
 
       return this;
